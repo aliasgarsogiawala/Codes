@@ -1,29 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
-<<<<<<< HEAD
-def TRCPrice(catnumber):
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3 Edge/16.16299'
-    }
-    url = f"https://www.trc-canada.com/product-detail/?{catnumber}"
-    response = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response.content,"html.parser")
-    grid = soup.find("div", class_="productContainer")
-   
-    product_link = grid.find("a")["href"]
-    full_url = "https://www.trc-canada.com" + product_link
-    response2 = requests.get(full_url, headers=headers)
-    soup2 = BeautifulSoup(response2.content, "html.parser")
-    grid2 = soup2.find("table", id="orderProductTable")
-    print(grid2)
-TRCPrice("6109-70-2")
-=======
 import re
 import openai
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 openai.api_key = 'YOUR API KEY'
+
 def chemicalbook(casnumber):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3 Edge/16.16299'
@@ -58,7 +41,7 @@ def SynZeal(casnumber):
     soup = BeautifulSoup(response.content, "html.parser")
     grid = soup.find("div", class_="product_price_rating")
     cat = grid.find("div")
-    return "Synzeal " + cat.getText(strip=True) + "\n\n"
+    return "Synzeal " + cat.getText(strip=True) + "\n"
 
 def guidechem(casnumber):
     return "No CAT number found for GuideChem\n"
@@ -83,11 +66,9 @@ def index():
 @app.route('/cas', methods=['POST'])
 def cas():
     casnumber = request.form['casnumber']
-    output = "Extracting..."
-    
-    # Add the "Extracting..." message
-    
-    headers = {     
+    output = ""
+
+    headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3 Edge/16.16299'
     }
     url = f"https://in.search.yahoo.com/search;_ylt=AwrKBxwlQYhkp.MputW6HAx.;_ylc=X1MDMjExNDcyMzAwMgRfcgMyBGZyAwRmcjIDcDpzLHY6c2ZwLG06c2ItdG9wBGdwcmlkA0xPQUF4TVc5VHdhWTVJVHpzMG44NUEEbl9yc2x0AzAEbl9zdWdnAzAEb3JpZ2luA2luLnNlYXJjaC55YWhvby5jb20EcG9zAzAEcHFzdHIDBHBxc3RybAMwBHFzdHJsAzE0BHF1ZXJ5A2NhcyUyMDIyNjAxLTU5LTgEdF9zdG1wAzE2ODY2NTExODg-?p=cas+{casnumber}&fr=sfp&fr2=p%3As%2Cv%3Asfp%2Cm%3Asb-top&iscqry="
@@ -133,7 +114,6 @@ def cas():
             else:
                 match = re.search(r'RU=(.+?)/', href)
                 if match:
-                    
                     extracted_string = match.group(0)
                     finallink = extracted_string.replace("RU=", "").replace("%2f", "/").replace("%3a", ":")
                     response1 = requests.get(finallink)
@@ -143,12 +123,10 @@ def cas():
                         continue
                     else:
                         question = "What is the CAT number specific to this soup: " + grid.text.strip()
-                    output += "\n"+newname+"  "+ask_bot(question)+"\n"
+                    output += ask_bot(question)
             lst.append(newname[4:-4])
             i += 1
-            
-    return render_template('cat.html', output=output).replace("Answer:","")
+    return render_template('cat.html', output=output)
 
 if __name__ == '__main__':
     app.run()
->>>>>>> 3376f839ee26b57c5256076e5370073ee0e1a0be
