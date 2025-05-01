@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 200px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[readonly] {
+            background-color: #f1f1f1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            margin-bottom: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 3px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .button-container button:first-child {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .button-container button:last-child {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+    <script>
+        function showForm1() {
+            document.getElementById("form1").style.display = "block";
+            document.getElementById("form2").style.display = "none";
+        }
+
+        function showForm2() {
+            document.getElementById("form1").style.display = "none";
+            document.getElementById("form2").style.display = "block";
+        }
+
+        function calculatePrice() {
+            var rate = parseFloat(document.getElementById("rate").value);
+            var quantity = parseFloat(document.getElementById("quantity").value);
+            var gst = parseFloat(document.getElementById("gst").value);
+            var transport = parseFloat(document.getElementById("transport").value);
+            var rate1 = parseFloat(document.getElementById("rate1").value);
+            var quantity1 = parseFloat(document.getElementById("quantity1").value);
+            var gst1 = parseFloat(document.getElementById("gst1").value);
+            var transport1 = parseFloat(document.getElementById("transport1").value);
+
+            var price = ((rate * quantity) + transport) + ((((rate * quantity) + transport) * gst) / 100);
+            var price1 = ((rate1 * quantity1) + transport1) + ((((rate1 * quantity1) + transport1) * gst1) / 100);
+            var profit = price1 - price;
+            var stock = quantity - quantity1;
+
+            if (!isNaN(price)) {
+                document.getElementById("price").value = price.toFixed(2);
+            } else {
+                document.getElementById("price").value = "";
+            }
+
+            if (!isNaN(price1)) {
+                document.getElementById("price1").value = price1.toFixed(2);
+            } else {
+                document.getElementById("price1").value = "";
+            }
+
+            if (!isNaN(profit)) {
+                document.getElementById("profit").value = profit.toFixed(2);
+            } else {
+                document.getElementById("profit").value = "";
+            }
+
+            if (!isNaN(stock)) {
+                document.getElementById("stock").value = stock;
+            } else {
+                document.getElementById("stock").value = "";
+            }
+            // Calculation code here...
+        }
+
+        function saveForm1() {
+            var invoice = document.getElementById("invoice").value;
+            var product = document.getElementById("product").value;
+            var quantity = document.getElementById("quantity").value;
+            var rate = document.getElementById("rate").value;
+            var transport = document.getElementById("transport").value;
+            var gst = document.getElementById("gst").value;
+            var price = document.getElementById("price").value;
+
+            // Perform form saving logic here...
+            // You can send the form data to a server, save it to a database, or use other methods to store the data.
+
+            // Reset the form fields
+            document.getElementById("invoice").value = "";
+            document.getElementById("product").value = "";
+            document.getElementById("quantity").value = "";
+            document.getElementById("rate").value = "";
+            document.getElementById("transport").value = "";
+            document.getElementById("gst").value = "";
+            document.getElementById("price").value = "";
+        }
+
+        function saveForm2() {
+            var invoice1 = document.getElementById("invoice1").value;
+            var product1 = document.getElementById("product1").value;
+            var quantity1 = document.getElementById("quantity1").value;
+            var rate1 = document.getElementById("rate1").value;
+            var transport1 = document.getElementById("transport1").value;
+            var gst1 = document.getElementById("gst1").value;
+            var price1 = document.getElementById("price1").value;
+            var profit = document.getElementById("profit").value;
+            var stock = document.getElementById("stock").value;
+
+            // Perform form saving logic here...
+            // You can send the form data to a server, save it to a database, or use other methods to store the data.
+
+            // Reset the form fields
+            document.getElementById("invoice1").value = "";
+            document.getElementById("product1").value = "";
+            document.getElementById("quantity1").value = "";
+            document.getElementById("rate1").value = "";
+            document.getElementById("transport1").value = "";
+            document.getElementById("gst1").value = "";
+            document.getElementById("price1").value = "";
+            document.getElementById("profit").value = "";
+            document.getElementById("stock").value = "";
+        }
+    </script>
+</head>
+<body>
+    <div class="button-container">
+        <button onclick="showForm1()">Purchase</button>
+        <button onclick="showForm2()">Sell</button>
+    </div>
+
+    <div class="form-container" id="form1">
+        <form name="f1">
+            <label for="invoice">Purchase Invoice number:</label>
+            <input type="text" id="invoice" required><br>
+
+            <label for="product">Product:</label>
+            <input type="text" id="product" required><br>
+
+            <label for="quantity">Quantity:</label>
+            <input type="text" id="quantity" required oninput="calculatePrice()"><br>
+
+            <label for="rate">Rate:</label>
+            <input type="text" id="rate" required oninput="calculatePrice()"><br>
+
+            <label for="transport">Transportation Price:</label>
+            <input type="text" id="transport" required oninput="calculatePrice()"><br>
+
+            <label for="gst">GST:</label>
+            <input type="text" id="gst" required oninput="calculatePrice()"><br>
+
+            <label for="price">Total Price:</label>
+            <input type="text" id="price" readonly><br>
+
+            <button type="button" onclick="saveForm1()">Save</button>
+        </form>
+    </div>
+
+    <div class="form-container" id="form2" style="display: none;">
+        <form name="f2">
+            <label for="invoice1">Sale Invoice number:</label>
+            <input type="text" id="invoice1" required><br>
+
+            <label for="product1">Product:</label>
+            <input type="text" id="product1" required oninput="loadDataFromForm1()"><br>
+
+            <label for="quantity1">Quantity:</label>
+            <input type="text" id="quantity1" required oninput="calculatePrice()"><br>
+
+            <label for="rate1">Rate:</label>
+            <input type="text" id="rate1" required oninput="calculatePrice()"><br>
+
+            <label for="transport1">Packaging and Forwarding charges:</label>
+            <input type="text" id="transport1" required oninput="calculatePrice()"><br>
+
+            <label for="gst1">GST:</label>
+            <input type="text" id="gst1" required oninput="calculatePrice()"><br>
+
+            <label for="price1">Total Price:</label>
+            <input type="text" id="price1" readonly><br>
+
+            <label for="profit">Profit:</label>
+            <input type="text" id="profit" readonly><br>
+
+            <label for="stock">In Stock:</label>
+            <input type="text" id="stock" readonly><br>
+
+            <button type="button" onclick="saveForm2()">Save</button>
+        </form>
+    </div>
+
+    <script>
+        function loadDataFromForm1() {
+            var product1 = document.getElementById("product1").value;
+            
+            // Fetch data corresponding to product1 from the saved form 1 and populate the fields in form 2.
+            // You can use AJAX, fetch API, or other methods to retrieve the saved form data.
+            // Once you have the data, set the values of the form fields using JavaScript.
+        }
+    </script>
+</body>
+</html>
