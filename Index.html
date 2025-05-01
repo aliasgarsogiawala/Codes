@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<head>
+    <title>Question-Answering Chatbot</title>
+</head>
+<body>
+    <h1>Question-Answering Chatbot</h1>
+    <form method="POST">
+        <label for="question">Enter your question:</label>
+        <input type="text" id="question" name="question">
+        <button type="submit">Get Answer</button>
+    </form>
+    {% if question %}
+        <h2>Question:</h2>
+        <p>{{ question }}</p>
+    {% endif %}
+    {% if answer %}
+        <h2>Answer:</h2>
+        <p>{{ answer }}</p>
+    {% endif %}
+</body>
+</html>
